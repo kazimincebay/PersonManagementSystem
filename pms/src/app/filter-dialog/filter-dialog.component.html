@@ -1,0 +1,86 @@
+<form [formGroup]="filterDialogForm">
+  <div class="row">
+    <div class="col-xs">Filtrele</div>
+  </div>
+  <div class="row form-group">
+    <div class="col-xs">
+      <mat-form-field appearance="fill">
+        <mat-label>Arama</mat-label>
+        <input
+        placeholder="İsim Ya Da Ünvan Giriniz"
+          formControlName="search"
+          ng-pattern="^[a-zA-ZığüşöçİĞÜŞÖÇ ]+$"
+          class="form-control"
+          matInput
+          #newItem
+        />
+        <mat-error *ngIf="filterDialogForm.get('search')?.hasError('pattern')">Lütfen Geçerli Karakter Giriniz</mat-error>
+      </mat-form-field>
+    </div>
+    <div class="col-xs">
+      <mat-form-field appearance="fill">
+        <mat-select
+          placeholder="Şirket Seçiniz"
+          #authvalue
+          (selectionChange)="changeSelect($event.value)"
+        >
+          <mat-option *ngFor="let auth of authList" id="value" [value]="auth">
+            {{ auth.company }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row" style="text-align: center">
+    <div class="col-xs">
+      <label> Onay/Red Durumu Seçiniz</label>
+      <hr />
+    </div>
+  </div>
+  <div class="row" style="text-align: center">
+    <div class="col-xs-4">
+      <mat-radio-button
+        (click)="onayRedState('1')"
+        [checked]="onay"
+        >Onaylandı</mat-radio-button
+      >
+    </div>
+    <div class="col-xs-4">
+      <mat-radio-button
+        (click)="onayRedState('2')"
+        [checked]="red"
+        >Reddedildi</mat-radio-button
+      >
+    </div>
+    <div class="col-xs-4">
+      <mat-radio-button
+        (click)="onayRedState('3')"
+        [checked]="red"
+        >Hepsi</mat-radio-button
+      >
+    </div>
+  </div>
+  <hr />
+  <div class="row" style="text-align: center; margin-top: 20px">
+    <div class="col-xs-6">
+      <button
+        mat-raised-button
+        color="accent"
+        [disabled]="filterDialogForm.invalid"
+        (click)="addNewItem(newItem.value)"
+      >
+        Filtrele
+      </button>
+    </div>
+    <div class="col-xs-6">
+      <button
+        mat-raised-button
+        style="cursor: pointer"
+        color="warn"
+        (click)="closeDialog()"
+      >
+        Kapat
+      </button>
+    </div>
+  </div>
+</form>

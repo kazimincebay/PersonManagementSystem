@@ -1,0 +1,56 @@
+<div class="focus-row">
+  <div
+    class="row"
+    *ngFor="let item of gelenListe; let i = index"
+    style="margin-top: 10px"
+  >
+    <div class="row">
+      <div class="col-xs "><b>T.C. Kimlik No : </b>{{ gelenListe[i]["personTC"] }}</div>
+    </div>
+    <div class="row">
+      <div class="col-xs ml-1">
+       <b>Adı Soyadı :</b>  {{ gelenListe[i]["personFullname"] }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs ml-1"><b>Ünvanı :</b>  {{ gelenListe[i]["personTitle"] }}</div>
+    </div>
+    <div class="row">
+      <div class="col-xs ml-1"><b>Şirketi :</b> {{ gelenListe[i]["personCompany"] }}</div>
+    </div>
+    <div class="row">
+      <div class="col-xs ml-1">
+
+         <b>Doğum Tarihi :</b>
+          {{ gelenListe[i]["personBirthTime"] | date: "dd-MM-yyyy" }}
+
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs ml-1">
+        <mat-radio-button
+          name="{{ gelenListe[i]['personTC'] }}"
+          (change)="onay($event)"
+          value="{{ gelenListe[i]['personTC'] }}"
+          ><b>Onaylandı</b></mat-radio-button
+        >
+      </div>
+      <div class="col-xs ml-1">
+        <mat-radio-button
+          name="{{ gelenListe[i]['personTC'] }}"
+          value="{{ gelenListe[i]['personTC'] }}"
+          (change)="red($event)"
+          ><b>Reddedildi</b></mat-radio-button
+        >
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs uyarıRenk" *ngIf="divDisable">
+    <p>Lütfen Onay/Red Seçimlerini Yapınız</p>
+  </div>
+</div>
+<button mat-raised-button (click)="addPerson()" style="margin-top: 10%">
+  Kullanıcıları Veri Tabanına Kaydet
+</button>

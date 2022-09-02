@@ -1,0 +1,25 @@
+
+
+.user-form{
+  width:15%;
+  height: 61%;
+  background-color: #eee;
+  float:left;
+  margin-left:8%;
+}
+
+.form-input{
+  width:70%;
+}
+
+.age-label{
+  margin-top:10%;
+}
+
+.user-form-button{
+  margin-top:13px;
+}
+
+.uyarıRenk{
+  color:red;
+}

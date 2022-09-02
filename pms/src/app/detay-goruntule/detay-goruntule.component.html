@@ -1,0 +1,21 @@
+<div class="row">
+  <div class="col-xs">T.C. Kimlik Numarası : {{ veriliListe["personTC"] }}</div> <br/>
+</div>
+<div class="row">
+  <div class="col-xs">Adı Soyadı : {{ veriliListe["personFullname"] }}</div><br/>
+</div>
+<div class="row">
+  <div class="col-xs">Ünvanı : {{ veriliListe["personTitle"] }}</div><br/>
+</div>
+<div class="row">
+<div class="col-xs">Şirketi : {{ veriliListe["personCompany"] }}</div><br/>
+</div>
+<div class="row">
+  <div class="col-xs">Doğum Tarihi : {{ veriliListe["personBirthTime"] | date: "dd-MM-yyyy" }}</div><br/>
+</div>
+
+<div class="row" style="text-align: center; margin-top: 20px">
+  <div class="col-xs">
+    <button mat-raised-button color="warn" (click)="detayKapat()">Kapat</button>
+  </div>
+</div>

@@ -1,0 +1,187 @@
+<!-- <kendo-dialog (close)="close()"> -->
+<div class="container-fluid user-form">
+  <div class="col">
+    <div class="row">
+      <div class="col-8" style="float: left"><h3>Güncelleme</h3></div>
+      <div class="col-4" style="float: right; margin-left: 40%">
+        <button
+          style="
+            background-color: #fff;
+            border: none;
+            font-size: 16pt;
+            cursor: pointer;
+          "
+          (click)="closeDialog()"
+        >
+          x
+        </button>
+      </div>
+    </div>
+    <form [formGroup]="dialogForm">
+      <div class="row form-group">
+        <div class="col-xs">
+          <mat-form-field appearance="fill">
+            <mat-label>T.C. Kimlik Numarası</mat-label>
+            <input
+              formControlName="personTC"
+              [(ngModel)]="person.personTC"
+              onkeydown="javascript: return event.keyCode == 69||event.keyCode == 109||event.keyCode == 107||event.keyCode == 110||event.keyCode == 59||event.keyCode == 190||event.keyCode == 52||event.keyCode == 189||event.keyCode == 51  ? false : true"
+              (change)="editInput()"
+              ng-pattern="^[a-zA-ZığüşöçİĞÜŞÖÇ ]+$"
+              class="form-control"
+              type="number"
+              min="0"
+              readonly
+              matInput
+            />
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-xs">
+          <mat-form-field appearance="fill">
+            <mat-label>Adı Soyadı</mat-label>
+            <input
+              matInput
+              [(ngModel)]="person.personFullname"
+              formControlName="personFullname"
+              onkeydown="javascript: return (event.keyCode>=48&&event.keyCode<=57)||(event.keyCode>=96&&event.keyCode<=105) ? false : true"
+              ng-pattern="^[a-zA-ZığüşöçİĞÜŞÖÇ ]+$"
+              class="form-control"
+              (change)="editInput()"
+              id="personFullname"
+            />
+            <mat-error
+              *ngIf="dialogForm.get('personFullname')?.hasError('required')"
+            >
+              Adınızı Girmeniz Gereklidir
+            </mat-error>
+            <mat-error
+              *ngIf="dialogForm.get('personFullname')?.hasError('maxlength')"
+            >
+              30 Karakteri Aşmamalısınız
+            </mat-error>
+          </mat-form-field>
+          <div *ngIf="emptyFullName">
+            <p class="uyarıRenk">Ad Soyad Boş Olamaz</p>
+          </div>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-xs">
+          <mat-form-field appearance="fill">
+            <mat-label>Ünvanı</mat-label>
+            <input
+              matInput
+              [(ngModel)]="person.personTitle"
+              ng-pattern="^[a-zA-ZığüşöçİĞÜŞÖÇ ]+$"
+              formControlName="personTitle"
+              onkeydown="javascript: return (event.keyCode>=48&&event.keyCode<=57)||(event.keyCode>=96&&event.keyCode<=105) ? false : true"
+              (change)="editInput()"
+              class="form-control"
+              id="personTitle"
+            /><mat-error
+              *ngIf="dialogForm.get('personTitle')?.hasError('required')"
+            >
+              Ünvanınızı Girmeniz Gereklidir
+            </mat-error>
+            <mat-error
+              *ngIf="dialogForm.get('personTitle')?.hasError('maxlength')"
+            >
+              30 Karakteri Aşmamalısınız
+            </mat-error>
+          </mat-form-field>
+          <div *ngIf="emptyTitle">
+            <p class="uyarıRenk">Ünvan Boş Olamaz</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="row form-group">
+        <div class="col-xs">
+          <mat-form-field appearance="fill">
+            <mat-label>Şirketi</mat-label>
+            <mat-select
+              placeholder="Şirket Seçiniz"
+              [(ngModel)]="person.personCompany"
+              formControlName="personCompany"
+              #authvalue
+            >
+              <mat-option
+                *ngFor="let auth of authList"
+                id="value"
+                [value]="auth.company"
+              >
+                {{ auth.company }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row form-group">
+        <div class="col-xs">
+          <mat-form-field appearance="fill">
+            <mat-label>Durumu</mat-label>
+            <mat-select
+              placeholder="Durum Seçiniz"
+              [(ngModel)]="person.personState"
+              formControlName="personState"
+            >
+              <mat-option value="Onaylandı"> Onaylandı </mat-option>
+              <mat-option value="Reddedildi">Reddedildi</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-xs">
+          <mat-form-field appearance="fill">
+            <mat-label>Doğum Tarihi</mat-label>
+            <input
+              matInput
+              formControlName="personBirthTime"
+              [(ngModel)]="personBirthTime"
+              (dateChange)="editInput()"
+              class="form-control"
+              readonly
+              id="personBirthTime"
+              [matDatepicker]="picker"
+            />
+            <mat-hint>GG/AA/YYYY</mat-hint>
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="picker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error
+              *ngIf="dialogForm.get('personBirthTime')?.hasError('required')"
+            >Tarih Giriniz</mat-error>
+          </mat-form-field>
+          <div *ngIf="ageDisable">
+            <p class="uyarıRenk">Yaş Aralığı Uyumsuz</p>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="row">
+      <hr />
+    </div>
+
+    <div class="row" style="float: right">
+      <div class="col-xs-12">
+        <button
+          mat-raised-button
+          color="accent"
+          class="user-form-button"
+          [disabled]="disableForm"
+          (click)="updatePerson()"
+        >
+          Güncelle
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- </kendo-dialog> -->

@@ -1,0 +1,180 @@
+<div class="row col-xs-12" style="place-content: center">
+  <h3
+    style="
+      border: 5px double;
+      text-shadow: 2px 2px 6px black;
+      box-shadow: none;
+      box-shadow: 2px 2px 5px black;
+    "
+  >
+    Yeni Personel Kaydı Formu
+  </h3>
+</div>
+<form [formGroup]="editForm">
+  <div class="row form-group">
+    <div class="col-xs-12">
+      <mat-form-field appearance="fill">
+        <mat-label>T.C. Kimlik Numarası</mat-label>
+        <input
+          formControlName="personTC"
+          [(ngModel)]="person.personTC"
+          onkeydown="javascript: return event.keyCode == 69||event.keyCode == 109||event.keyCode == 107||event.keyCode == 110||event.keyCode == 59||event.keyCode == 190||event.keyCode == 189 ||event.keyCode == 16 ||event.keyCode == 17 ||event.keyCode == 67||event.keyCode == 88 ||(event.keycode==16&&event.keycode==52) ? false : true"
+          (change)="editInput()"
+          ng-pattern="^[a-zA-ZığüşöçİĞÜŞÖÇ ]+$"
+          class="form-control"
+          type="number"
+          oninput="javascript: if (this.value.length > 11) this.value = this.value.slice(0,11);"
+          matInput
+        />
+
+        <mat-error *ngIf="editForm.get('personTC')?.hasError('required')">
+          T.C Kimlik Numaranızı Giriniz
+        </mat-error>
+        <mat-error *ngIf="editForm.get('personTC')?.hasError('pattern')">
+          Yalnızca Sayı Karakteri Giriniz
+        </mat-error>
+        <mat-error *ngIf="editForm.get('personTC')?.hasError('minLength')">
+          11 Karakter Giriniz
+        </mat-error>
+      </mat-form-field>
+      <div *ngIf="identityWarning">
+        <p class="uyarıRenk">Kimlik Numarası 11 Karakter Olmalıdır.</p>
+      </div>
+      <div *ngIf="divdisable">
+        <p class="uyarıRenk">Bu Kimlik Numarası Kayıtlı</p>
+      </div>
+      <div *ngIf="onayBekleyenDiv">
+        <p class="uyarıRenk">Onay Bekleyen Kullanıcı</p>
+      </div>
+      <div *ngIf="invalidMessage">
+        <p class="uyarıRenk">Geçersiz T.C. Kimlik Numarası</p>
+      </div>
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-xs-12">
+      <mat-form-field appearance="fill">
+        <mat-label>Adı Soyadı</mat-label>
+        <input
+          formControlName="personFullname"
+          [(ngModel)]="person.personFullname"
+          (change)="editInput()"
+          onkeydown="javascript: return (event.keyCode>=48&&event.keyCode<=57)||(event.keyCode>=96&&event.keyCode<=105) ? false : true"
+          ng-pattern="^[a-zA-ZığüşöçİĞÜŞÖÇ ]+$"
+          class="form-control"
+          matInput
+        />
+        <mat-error *ngIf="editForm.get('personFullname')?.hasError('required')">
+          Adınızı Giriniz
+        </mat-error>
+        <mat-error
+          *ngIf="editForm.get('personFullname')?.hasError('maxlength')"
+        >
+          30 Karakteri Aşmamalısınız
+        </mat-error>
+      </mat-form-field>
+      <div *ngIf="emptyFullName">
+        <p class="uyarıRenk">Ad Soyad Boş Olamaz</p>
+      </div>
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-xs-12">
+      <mat-form-field appearance="fill">
+        <mat-label>Ünvanı</mat-label>
+        <input
+          matInput
+          ng-pattern="^[a-zA-ZığüşöçİĞÜŞÖÇ ]+$"
+          formControlName="personTitle"
+          (change)="editInput()"
+          [(ngModel)]="person.personTitle"
+          onkeydown="javascript: return (event.keyCode>=48&&event.keyCode<=57)||(event.keyCode>=96&&event.keyCode<=105) ? false : true"
+          class="form-control"
+        /><mat-error *ngIf="editForm.get('personTitle')?.hasError('required')">
+          Ünvanınızı Giriniz
+        </mat-error>
+        <mat-error *ngIf="editForm.get('personTitle')?.hasError('maxlength')">
+          30 Karakteri Aşmamalısınız
+        </mat-error>
+      </mat-form-field>
+      <div *ngIf="emptyTitle">
+        <p class="uyarıRenk">Ünvan Boş Olamaz</p>
+      </div>
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-xs-12">
+      <mat-form-field appearance="fill">
+        <mat-label>Şirketi</mat-label>
+        <mat-select
+          [(ngModel)]="person.personCompany"
+          formControlName="personCompany"
+          #authvalue
+        >
+          <mat-option
+            *ngFor="let auth of authList"
+            id="value"
+            [value]="auth.company"
+          >
+            {{ auth.company }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="editForm.get('personCompany')?.hasError('required')">
+          Şirket Seçmeniz Gereklidir
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-xs-12">
+      <mat-form-field appearance="fill">
+        <mat-label>Doğum Tarihi</mat-label>
+        <input
+        matInput
+          formControlName="personBirthTime"
+          (dateChange)="editInput()"
+          [(ngModel)]="person.personBirthTime"
+          class="form-control"
+          readonly
+          [matDatepicker]="picker"
+        /><mat-hint>GG/AA/YYYY</mat-hint>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="editForm.get('personBirthTime')?.hasError('required')"
+          >Lütfen Tarih Giriniz</mat-error
+        >
+      </mat-form-field>
+      <div *ngIf="ageDisable">
+        <p class="uyarıRenk">Kullanıcı 18-100 yaş aralığında olmalıdır</p>
+      </div>
+    </div>
+  </div>
+</form>
+
+<div class="row">
+  <div class="col-xs-12">
+    <mat-label class="age-label">Yaşınız : {{ age }}</mat-label>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <button
+      mat-raised-button
+      color="accent"
+      [disabled]="disableForm"
+      name="addUserButton"
+      class="user-form-button"
+      (click)="addPerson()"
+    >
+      Kullanıcı Ekle
+    </button>
+  </div>
+</div>
+
+<button
+  mat-raised-button
+  (click)="onayBekleyenAc()"
+  style="margin-top: 10%; box-shadow: 6px 5px 11px black"
+>
+  Onay Bekleyenler
+</button>

@@ -1,0 +1,207 @@
+
+<div class="row page-header" style="margin-top: 10%;">
+  <div class="col-xs-4">
+    Personeller Listesi
+  </div>
+  <div class="col-xs-4" ></div>
+
+  <div class="col-xs-4">
+    <button mat-raised-button color="primary" (click)="listPerson()">
+      Tümünü Görüntüle
+    </button>
+    <button
+      mat-raised-button
+      color="accent"
+      (click)="filterDialogOpen()"
+      style="margin-left: 10px"
+    >
+      Filtrele
+    </button>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs" *ngIf="searchh">
+    <p>{{ search }} için Sonuçlar Gösteriliyor</p>
+  </div>
+
+  <div class="col-xs" *ngIf="companyy">
+    <p>{{ company }} için Sonuçlar Gösteriliyor</p>
+  </div>
+
+  <div class="col-xs" *ngIf="selectStatee">
+    <p>{{ selectState }} için Sonuçlar Gösteriliyor</p>
+  </div>
+
+  <div class="col-xs" *ngIf="selectStateCompany">
+    <p>{{ selectState }}-{{ company }} için Sonuçlar Gösteriliyor</p>
+  </div>
+
+  <div class="col-xs" *ngIf="selectStateSearch">
+    <p>{{ selectState }}-{{ search }} için Sonuçlar Gösteriliyor</p>
+  </div>
+
+  <div class="col-xs" *ngIf="selectSearchCompany">
+    <p>{{ search }}-{{ company }} için Sonuçlar Gösteriliyor</p>
+  </div>
+
+  <div class="col-xs" *ngIf="all">
+    <p>Tüm Sonuçlar Gösteriliyor</p>
+  </div>
+
+  <div class="col-xs" *ngIf="full">
+    <p>
+      {{ search }} - {{ company }} - {{ selectState }} için Sonuçlar
+      Gösteriliyor
+    </p>
+  </div>
+</div>
+<!--
+<div class="row col-xs-12">
+  <div class="col-xs-6">
+    <input
+      type="text"
+      placeholder="Arama"
+      class="search-box"
+      [(ngModel)]="filterString"
+      (keyup)="filterPerson()"
+    />
+  </div>
+  <div class="col-xs-6">
+    <mat-form-field appearance="fill">
+      <mat-select
+        placeholder="Şirket Seçiniz"
+        [(ngModel)]="auth"
+        #authvalue
+        (selectionChange)="changeSelect($event.value)"
+      >
+        <mat-option *ngFor="let auth of authList" id="value" [value]="auth">
+          {{ auth.company }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div> -->
+<!-- <div class="row">
+  <div class="col-xs-6"><mat-radio-button name="onayred" (change)="onayListele()">Onaylandı</mat-radio-button></div>
+  <div class="col-xs-6"><mat-radio-button name="onayred" (change)="redListele()">Reddedildi</mat-radio-button></div>
+
+</div> -->
+<div class="row">
+  <div class="col-xs person-table-col">
+    <table mat-table [dataSource]="dataSource" class="person-table-div">
+      <!--- Note that these columns can be defined in any order.
+        The actual rendered columns are set as a property on the row definition" -->
+
+      <ng-container matColumnDef="personTC">
+        <th mat-header-cell *matHeaderCellDef>T.C Kimlik Numarası</th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          style="cursor: pointer"
+          (click)="detayGoruntule(element.personId)"
+        >
+          {{ element.personTC }}
+        </td>
+      </ng-container>
+      <!-- Position Column -->
+      <!-- <ng-container matColumnDef="personId">
+        <th mat-header-cell *matHeaderCellDef>Id</th>
+        <td mat-cell *matCellDef="let element">{{ element.personId }}</td>
+      </ng-container> -->
+
+      <ng-container matColumnDef="personFullname">
+        <th mat-header-cell *matHeaderCellDef>Adı Soyadı</th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          style="cursor: pointer"
+          (click)="detayGoruntule(element.personId)"
+        >
+          {{ element.personFullname }}
+        </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="personTitle">
+        <th mat-header-cell *matHeaderCellDef>Ünvanı</th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          style="cursor: pointer"
+          (click)="detayGoruntule(element.personId)"
+        >
+          {{ element.personTitle }}
+        </td>
+      </ng-container>
+
+      <!-- <ng-container matColumnDef="personCompany">
+        <th mat-header-cell *matHeaderCellDef>Kullanıcı Şirketi</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.personCompany }}
+        </td>
+      </ng-container> -->
+
+      <!-- Weight Column -->
+      <!-- <ng-container matColumnDef="personBirthTime">
+        <th mat-header-cell *matHeaderCellDef>Kullanıcı Doğum Tarihi</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.personBirthTime | date: "dd-MM-yyyy" }}
+        </td>
+      </ng-container> -->
+
+      <ng-container matColumnDef="personState">
+        <th mat-header-cell *matHeaderCellDef>Onay/Red</th>
+        <td
+          mat-cell
+          *matCellDef="let element"
+          style="cursor: pointer"
+          (click)="detayGoruntule(element.personId)"
+        >
+          {{ element.personState }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="personEdit">
+        <th mat-header-cell *matHeaderCellDef>Düzenle</th>
+        <td mat-cell *matCellDef="let element">
+          <button
+            mat-raised-button
+            (click)="editButtonClick(element.personId)"
+            [disabled]="isEditDisabled"
+            color="primary"
+            class="btn btn-success"
+          >
+            Düzenle
+          </button>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="personDelete" style="margin-left: 10%">
+        <th mat-header-cell *matHeaderCellDef>Sil</th>
+        <td mat-cell *matCellDef="let element">
+          <button
+            mat-raised-button
+            [disabled]="isDeleteDisabled"
+            (click)="deleteButtonClick(element.personId)"
+            class="btn btn-danger"
+            color="warn"
+          >
+           Sil
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+    <mat-paginator
+      [pageSizeOptions]="[5, 10, 20]"
+      showFirstLastButtons
+      [pageSize]="5"
+      aria-label="Select page"
+    >
+    </mat-paginator>
+  </div>
+</div>
+
+<!-- <app-filter-dialog (newItemEvent)="addItem($event)"></app-filter-dialog> -->
