@@ -40,14 +40,14 @@ Adımlar
 
 2. Backend (.Net Core Web API) Çalıştırma:
 
-   cd backend
-   dotnet restore
+   cd backend -
+   dotnet restore -
    dotnet run
 
 3. Frontend (Angular) Çalıştırma:
 
-   cd frontend
-   npm install
+   cd frontend -
+   npm install -
    ng serve
 
 4. Tarayıcınızda http://localhost:4200 adresine giderek uygulamayı görüntüleyebilirsiniz.
